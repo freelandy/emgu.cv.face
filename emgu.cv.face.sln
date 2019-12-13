@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "emgu.cv.face", "emgu.cv.face\emgu.cv.face.csproj", "{1A1FBE5E-BA99-40E8-889A-A0506B8C1507}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "emgu.cv.face.gui", "emgu.cv.face.gui\emgu.cv.face.gui.csproj", "{71AC9685-AA7A-44C3-89F1-38E20A411B1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A1FBE5E-BA99-40E8-889A-A0506B8C1507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A1FBE5E-BA99-40E8-889A-A0506B8C1507}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A1FBE5E-BA99-40E8-889A-A0506B8C1507}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A1FBE5E-BA99-40E8-889A-A0506B8C1507}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71AC9685-AA7A-44C3-89F1-38E20A411B1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71AC9685-AA7A-44C3-89F1-38E20A411B1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71AC9685-AA7A-44C3-89F1-38E20A411B1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71AC9685-AA7A-44C3-89F1-38E20A411B1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DC50DF0F-17ED-4D00-8751-13B2179F14C2}
+	EndGlobalSection
+EndGlobal
