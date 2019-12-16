@@ -33,6 +33,8 @@
             this.components = new System.ComponentModel.Container();
             this.imageBox = new Emgu.CV.UI.ImageBox();
             this.btnRegister = new System.Windows.Forms.Button();
+            this.lblInfo = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -40,13 +42,13 @@
             // 
             this.imageBox.Location = new System.Drawing.Point(37, 34);
             this.imageBox.Name = "imageBox";
-            this.imageBox.Size = new System.Drawing.Size(508, 389);
+            this.imageBox.Size = new System.Drawing.Size(640, 480);
             this.imageBox.TabIndex = 2;
             this.imageBox.TabStop = false;
             // 
             // btnRegister
             // 
-            this.btnRegister.Location = new System.Drawing.Point(657, 34);
+            this.btnRegister.Location = new System.Drawing.Point(770, 34);
             this.btnRegister.Name = "btnRegister";
             this.btnRegister.Size = new System.Drawing.Size(75, 23);
             this.btnRegister.TabIndex = 3;
@@ -54,11 +56,27 @@
             this.btnRegister.UseVisualStyleBackColor = true;
             this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
             // 
+            // lblInfo
+            // 
+            this.lblInfo.AutoSize = true;
+            this.lblInfo.Location = new System.Drawing.Point(712, 502);
+            this.lblInfo.Name = "lblInfo";
+            this.lblInfo.Size = new System.Drawing.Size(41, 12);
+            this.lblInfo.TabIndex = 4;
+            this.lblInfo.Text = "label1";
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(913, 559);
+            this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.imageBox);
             this.Name = "MainForm";
@@ -66,6 +84,7 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -73,6 +92,8 @@
 
         private Emgu.CV.UI.ImageBox imageBox;
         private System.Windows.Forms.Button btnRegister;
+        private System.Windows.Forms.Label lblInfo;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

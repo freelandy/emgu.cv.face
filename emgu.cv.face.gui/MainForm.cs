@@ -45,8 +45,9 @@ namespace emgu.cv.face.gui
             try
             {
                 this.capture = new VideoCapture();
-                //this.capture.ImageGrabbed += ProcessFrame;
-                Application.Idle += new EventHandler(ProcessFrame);
+                this.capture.ImageGrabbed += ProcessFrame;
+                
+                //Application.Idle += new EventHandler(ProcessFrame);
             }
             catch (Exception ex)
             {
@@ -63,12 +64,15 @@ namespace emgu.cv.face.gui
             if (this.capture != null && this.capture.Ptr != IntPtr.Zero)
             {
                 // emgu不支持中文，所以转为Bitmap用GDI+绘制文字。有人说GDI+绘制效率更高，不知道真假。
-                this.frame = this.capture.QueryFrame().Bitmap;
-                
+                // I do not know why it sometimes throws OpenCV:videoSample exception when using capture.QueryFrame()
+                Mat gray = new Mat();
+                this.capture.Retrieve(gray);
+                this.frame = gray.Bitmap;
+
                 // detect face
                 List<Rectangle> faces = this.detector.Detect(this.frame);
 
-                if(faces.Count >= 1)
+                if (faces.Count >= 1)
                 {
                     Graphics g = Graphics.FromImage(this.frame);
 
@@ -90,12 +94,12 @@ namespace emgu.cv.face.gui
                                 this.userStatus.Add(identityIndex, true);
                             }
                             else
-                            { 
+                            {
                                 if (bool.Parse(this.userStatus[identityIndex].ToString()) == false)
                                 {
                                     this.userStatus[identityIndex] = true;
                                 }
-                                    
+
                             }
 
                             c = Color.Pink;
@@ -103,7 +107,7 @@ namespace emgu.cv.face.gui
                             // draw user id
                             string id = this.registeredUsers[identityIndex].ToString();
                             this.DrawText(faces[i], id, g);
-                            
+
                         }
 
                         // draw bounding box
@@ -111,7 +115,7 @@ namespace emgu.cv.face.gui
                     }
                 }
 
-                
+
                 // show this frame in image box whether faces are detected
                 this.imageBox.Image = new Image<Bgr,byte>(this.frame);
             }
@@ -244,6 +248,12 @@ namespace emgu.cv.face.gui
 
                 this.RegisterOnePerson("赵尽忠", bmp);
             }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            double fps = this.capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps);
+            this.lblInfo.Text = "Fps: " + fps.ToString();
         }
     }
 }
