@@ -40,7 +40,7 @@
             // 
             this.imageBox.Location = new System.Drawing.Point(37, 34);
             this.imageBox.Name = "imageBox";
-            this.imageBox.Size = new System.Drawing.Size(508, 289);
+            this.imageBox.Size = new System.Drawing.Size(508, 389);
             this.imageBox.TabIndex = 2;
             this.imageBox.TabStop = false;
             // 

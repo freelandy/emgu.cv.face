@@ -14,8 +14,8 @@ namespace emgu.cv.face.gui
         private string camera;
         private VideoCapture capture = null;
         private bool captureInProgress;
-        private Emgu.CV.Image<Bgr, Byte> frame = null;
-        private double threshold = 0.7;
+        private Bitmap frame = null;
+        private double threshold = 0.6;
 
         private Face.Detector detector = null;
         private Face.Aligner aligner = null;
@@ -54,35 +54,69 @@ namespace emgu.cv.face.gui
         {
             if (this.capture != null && this.capture.Ptr != IntPtr.Zero)
             {
-                // show frame in image box
-                this.frame = this.capture.QueryFrame().ToImage<Bgr, byte>();
-                this.imageBox.Image = this.frame;
-
+                this.frame = this.capture.QueryFrame().Bitmap;
+                
                 // detect face
-                Bitmap bmp = this.frame.ToBitmap();
-                List<Rectangle> faces = this.detector.Detect(bmp);
+                List<Rectangle> faces = this.detector.Detect(this.frame);
 
-                for(int i=0;i<faces.Count;i++)
+                if(faces.Count >= 1)
                 {
-                    this.frame.Draw(faces[i], new Bgr(255,0,0), 1);
+                    Graphics g = Graphics.FromImage(this.frame);
+                    
+                    for (int i = 0; i < faces.Count; i++)
+                    {
+                        // draw bounding box
+                        this.DrawBoundingBox(faces[i], g);
+
+
+                        // align face
+                        List<PointF> points = this.aligner.Align(this.frame, faces[0]);
+
+                        // recognition
+                        float similarity = 0;
+                        int identityIndex = this.recognizer.Identify(this.frame, points, ref similarity);
+
+                        if (similarity > threshold)
+                        {
+                            string id = this.registeredUsers[identityIndex].ToString();
+
+                            // draw user id
+                            this.DrawText(faces[i], id, g);
+                        }
+                    }
+
+                    
                 }
 
-
-                // align face
-                List<PointF> points = this.aligner.Align(bmp, faces[0]);
-
-                // recognition
-                float similarity = 0;
-                int identityIndex = this.recognizer.Identify(bmp, points, ref similarity);
-                
-                if(similarity > threshold)
-                {
-
-
-                    //CvInvoke.PutText(this.frame, "text", )
-                }
-                
+                // show this frame in image box whether faces are detected
+                this.imageBox.Image = new Image<Bgr,byte>(this.frame);
             }
+        }
+
+
+        private void DrawText(Rectangle bbox, string text, Graphics g)
+        {
+            // calculate a suitable position of text
+            int textSize = bbox.Width / 6; // 字体以像素为单位
+
+            // calculate text size
+            StringFormat sf = StringFormat.GenericTypographic;
+            sf.FormatFlags |= StringFormatFlags.MeasureTrailingSpaces;
+
+            Font font = new Font(new FontFamily("黑体"), textSize, GraphicsUnit.Pixel);
+            SizeF s = g.MeasureString(text, font, 0, sf);
+
+            Point textPosition = new Point();
+            textPosition.X = (bbox.Width - s.Width) < 0 ? bbox.X : bbox.X + (int)((bbox.Width - s.Width) / 2);
+            textPosition.Y = bbox.Y - s.Height < 0 ? bbox.Y + 2 : (int)(bbox.Y - s.Height);
+
+            g.DrawString(text, font, new SolidBrush(Color.Green), textPosition);
+        }
+
+
+        private void DrawBoundingBox(Rectangle box, Graphics g)
+        {
+            g.DrawRectangle(new Pen(Color.Green), box);
         }
 
 
@@ -146,10 +180,10 @@ namespace emgu.cv.face.gui
             List<PointF> points = this.aligner.Align(bmp, faces[0]);
 
             // assert face quality
-            if(this.assessor.Evaluate(bmp, faces[0], points) == 0)
-            {
-                return 2;
-            }
+            //if(this.assessor.Evaluate(bmp, faces[0], points) == 0)
+            //{
+            //    return 2;
+            //}
 
             // register
             int idx = this.recognizer.Register(bmp, points);
@@ -176,7 +210,13 @@ namespace emgu.cv.face.gui
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
+            OpenFileDialog dlg = new OpenFileDialog();
+            if(dlg.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap bmp = (Bitmap)Bitmap.FromFile(dlg.FileName);
 
+                this.RegisterOnePerson("赵尽忠", bmp);
+            }
         }
     }
 }
